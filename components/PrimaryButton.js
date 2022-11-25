@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   },
   text: {
     padding: 8,
+    textAlign: 'center',
     color: 'white',
   },
   pressed_iOS: {

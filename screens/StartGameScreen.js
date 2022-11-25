@@ -11,9 +11,13 @@ const StartGameScreen = () => {
         autoCapitalize='none'
         autoCorrect={false}
       />
-      <View style={styles.buttonContainer}>
-        <PrimaryButton>Reset</PrimaryButton>
-        <PrimaryButton>Confirm</PrimaryButton>
+      <View style={styles.buttonsContainer}>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton>Reset</PrimaryButton>
+        </View>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton>Confirm</PrimaryButton>
+        </View>
       </View>
     </View>
   );
@@ -36,8 +40,11 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     shadowOpacity: 0.25,
   },
-  buttonContainer:{
-    flexDirection:'row',
+  buttonsContainer: {
+    flexDirection: 'row',
+  },  
+  buttonContainer: {
+    flex:1,
   },
   input: {
     height: 50,
