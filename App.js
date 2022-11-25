@@ -1,14 +1,35 @@
-import { StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
+import { StyleSheet, ImageBackground, SafeAreaView, View } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useState } from 'react';
+import { useFonts } from 'expo-font';
+import { preventAutoHideAsync, hideAsync } from 'expo-splash-screen';
 import GameOverScreen from './screens/GameOverScreen';
 import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
 import Colors from './constants/colors';
 
+// Keep the splash screen visible while we fetch resources
+preventAutoHideAsync();
+
 const App = () => {
   const [userNumber, setUserNumber] = useState();
   const [gameOver, setGameOver] = useState(false);
+
+  const [fontsLoaded] = useFonts({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      // Tells the splash screen to hide immediately!
+      await hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const chosenNumberHandler = (chosenNumber) => {
     setUserNumber(chosenNumber);
@@ -24,19 +45,24 @@ const App = () => {
   if (gameOver && userNumber) screen = <GameOverScreen />;
 
   return (
-    <LinearGradient
-      colors={[Colors.plumBackground, Colors.yellowBackground]}
-      style={styles.rootScreen}
+    <View
+      style={{ flex: 1}}
+      onLayout={onLayoutRootView}
     >
-      <ImageBackground
-        source={require('./assets/images/background.png')}
-        resizeMode='cover'
+      <LinearGradient
+        colors={[Colors.plumBackground, Colors.yellowBackground]}
         style={styles.rootScreen}
-        imageStyle={styles.backgroundImage}
       >
-        <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          source={require('./assets/images/background.png')}
+          resizeMode='cover'
+          style={styles.rootScreen}
+          imageStyle={styles.backgroundImage}
+        >
+          <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </View>
   );
 };
 
