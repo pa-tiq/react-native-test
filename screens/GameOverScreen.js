@@ -36,16 +36,17 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: 300,
-    heigth: 400,
-    borderRadius: 2000,
+    heigth: 300,
+    borderRadius: 150,
     borderWidth: 3,
     borderColor: Colors.plumDarker,
     overflow: 'hidden',
-    margin: 200,
+    margin: 36,
   },
   image: {
-    width: '100%',
-    height: '50%',
+    width: 300,
+    height: 300,
+    overflow:'hidden'
   },
   text: {
     fontFamily: 'open-sans',
