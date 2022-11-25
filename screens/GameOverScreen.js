@@ -4,7 +4,6 @@ import Title from '../components/Title';
 import Colors from '../constants/colors';
 
 const GameOverScreen = (props) => {
-  console.log(props.rounds);
   return (
     <View style={styles.rootContainer}>
       <Title>Game Over!</Title>
@@ -44,6 +43,8 @@ const styles = StyleSheet.create({
     margin: 36,
   },
   image: {
+    maxWidth: '100%',
+    maxHeight: '100%',
     width: 300,
     height: 300,
     overflow:'hidden'
