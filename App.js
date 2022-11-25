@@ -14,6 +14,7 @@ preventAutoHideAsync();
 const App = () => {
   const [userNumber, setUserNumber] = useState();
   const [gameOver, setGameOver] = useState(false);
+  const [rounds, setRounds] = useState([]);
 
   const [fontsLoaded] = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -35,20 +36,33 @@ const App = () => {
     setUserNumber(chosenNumber);
   };
 
-  const gameOverHandler = () => {
+  const gameOverHandler = (rounds) => {
     setGameOver(true);
+    setRounds(rounds);
+  };
+
+  const newGameHandler = () => {
+    setUserNumber(null);
+    setGameOver(false);
+    setRounds([]);
   };
 
   let screen = <StartGameScreen onNumberPick={chosenNumberHandler} />;
   if (userNumber)
-    screen = <GameScreen chosenNumber={userNumber} onGameOver={gameOverHandler} />;
-  if (gameOver && userNumber) screen = <GameOverScreen />;
+    screen = (
+      <GameScreen chosenNumber={userNumber} onGameOver={gameOverHandler} />
+    );
+  if (gameOver && userNumber)
+    screen = (
+      <GameOverScreen
+        rounds={rounds}
+        number={userNumber}
+        onNewGame={newGameHandler}
+      />
+    );
 
   return (
-    <View
-      style={{ flex: 1}}
-      onLayout={onLayoutRootView}
-    >
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <LinearGradient
         colors={[Colors.plumBackground, Colors.yellowBackground]}
         style={styles.rootScreen}

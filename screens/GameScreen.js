@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Text, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Title from '../components/Title';
 import Card from '../components/Card';
@@ -18,19 +18,30 @@ function generateRandomBetween(min, max, exclude) {
   }
 }
 
+let min = 1;
+let max = 100;
+
 const GameScreen = (props) => {
   const { chosenNumber, onGameOver } = props;
   const initialGuess = generateRandomBetween(1, 100, chosenNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
-  const [min, setMin] = useState(1);
-  const [max, setMax] = useState(100);
+  const [rounds, setRounds] = useState([]);
+
+  useEffect(()=>{
+    return () => { //exiting game
+      min = 1;
+      max = 100;
+    };
+  },[]);
 
   useEffect(() => {
     if (currentGuess === chosenNumber) {
       Alert.alert('I won!', 'I guessed your number!', [
         { text: 'Congrats!', style: 'default' },
       ]);
-      onGameOver();
+      onGameOver(rounds);
+    } else {
+      setRounds((oldValues) => [currentGuess, ...oldValues]);
     }
   }, [currentGuess, chosenNumber, onGameOver]);
 
@@ -46,10 +57,10 @@ const GameScreen = (props) => {
     }
 
     if (direction === 'lower') {
-      setMax(currentGuess);
+      max = currentGuess;
       setCurrentGuess(generateRandomBetween(min, currentGuess, currentGuess));
     } else {
-      setMin(currentGuess);
+      min = currentGuess;
       setCurrentGuess(generateRandomBetween(currentGuess, max, currentGuess));
     }
   };
@@ -59,16 +70,26 @@ const GameScreen = (props) => {
       <Title>Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
+        <InstructionText style={styles.instructionText}>
+          Higher or lower?
+        </InstructionText>
         <ButtonsContainer>
           <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
-            <Ionicons name="md-remove" size={30} color="white"/>
+            <Ionicons name='md-remove' size={30} color='white' />
           </PrimaryButton>
           <PrimaryButton onPress={nextGuessHandler.bind(this, 'higher')}>
-            <Ionicons name="md-add" size={30} color="white"/>
+            <Ionicons name='md-add' size={30} color='white' />
           </PrimaryButton>
         </ButtonsContainer>
       </Card>
+      <View>
+        <FlatList
+          data={rounds}
+          renderItem={(roundData) => {
+            return <Text key={roundData.index}>{roundData.item}</Text>;
+          }}
+        />
+      </View>
     </View>
   );
 };
