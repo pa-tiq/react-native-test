@@ -7,6 +7,7 @@ import NumberContainer from '../components/NumberContainer';
 import PrimaryButton from '../components/PrimaryButton';
 import InstructionText from '../components/InstructionText';
 import ButtonsContainer from '../components/ButtonsContainer';
+import ListItem from '../components/ListItem';
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -27,12 +28,13 @@ const GameScreen = (props) => {
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [rounds, setRounds] = useState([]);
 
-  useEffect(()=>{
-    return () => { //exiting game
+  useEffect(() => {
+    return () => {
+      //exiting game
       min = 1;
       max = 100;
     };
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (currentGuess === chosenNumber) {
@@ -58,10 +60,14 @@ const GameScreen = (props) => {
 
     if (direction === 'lower') {
       max = currentGuess;
-      setCurrentGuess(generateRandomBetween(min, currentGuess, currentGuess));
+      setCurrentGuess((oldGuess)=> {
+        return generateRandomBetween(min, oldGuess, oldGuess);
+      });
     } else {
       min = currentGuess;
-      setCurrentGuess(generateRandomBetween(currentGuess, max, currentGuess));
+      setCurrentGuess((oldGuess) => {
+        return generateRandomBetween(oldGuess, max, oldGuess);
+      });
     }
   };
 
@@ -82,11 +88,17 @@ const GameScreen = (props) => {
           </PrimaryButton>
         </ButtonsContainer>
       </Card>
-      <View>
+      <View style={styles.listContainer}>
         <FlatList
           data={rounds}
           renderItem={(roundData) => {
-            return <Text key={roundData.index}>{roundData.item}</Text>;
+            return (
+              <ListItem
+                key={roundData.index}
+                round={rounds.length - roundData.index}
+                guess={roundData.item}
+              />
+            );
           }}
         />
       </View>
@@ -105,4 +117,8 @@ const styles = StyleSheet.create({
   instructionText: {
     marginBottom: 12,
   },
+  listContainer:{
+    flex:1,
+    padding:16,
+  }
 });
