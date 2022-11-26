@@ -4,7 +4,8 @@ import {
   TextInput,
   View,
   Alert,
-  Text
+  Dimensions,
+  useWindowDimensions
 } from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
 import Title from '../components/Title';
@@ -31,8 +32,10 @@ const StartGameScreen = (props) => {
   const resetInputHandler = () => {
     setEnteredNumber('');
   };
+  const { width, height } = useWindowDimensions();
+  const marginTop = height < 400 ? 50 : 100;
   return (
-    <View style={styles.rootContainer}>
+    <View style={[styles.rootContainer,{marginTop: marginTop}]}>
       <Title>Oieeeeeee</Title>
       <Card>
         <InstructionText>Enter a number</InstructionText>
@@ -56,10 +59,12 @@ const StartGameScreen = (props) => {
 
 export default StartGameScreen;
 
+const deviceHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   rootContainer:{
     flex:1,
-    marginTop:100,
+    marginTop: deviceHeight < 400 ? 30 : 100,
     alignItems:'center'
   },
   input: {

@@ -1,5 +1,5 @@
 import { StyleSheet, ImageBackground, SafeAreaView, View } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { preventAutoHideAsync, hideAsync } from 'expo-splash-screen';
