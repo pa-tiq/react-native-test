@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { preventAutoHideAsync, hideAsync } from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import GameOverScreen from './screens/GameOverScreen';
 import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
@@ -62,6 +63,8 @@ const App = () => {
     );
 
   return (
+    <>
+    <StatusBar style='light'/>
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <LinearGradient
         colors={[Colors.plumBackground, Colors.yellowBackground]}
@@ -77,6 +80,7 @@ const App = () => {
         </ImageBackground>
       </LinearGradient>
     </View>
+    </>
   );
 };
 
