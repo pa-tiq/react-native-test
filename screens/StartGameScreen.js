@@ -5,7 +5,9 @@ import {
   View,
   Alert,
   Dimensions,
-  useWindowDimensions
+  useWindowDimensions,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
 import Title from '../components/Title';
@@ -35,25 +37,31 @@ const StartGameScreen = (props) => {
   const { width, height } = useWindowDimensions();
   const marginTop = height < 400 ? 50 : 100;
   return (
-    <View style={[styles.rootContainer,{marginTop: marginTop}]}>
-      <Title>Oieeeeeee</Title>
-      <Card>
-        <InstructionText>Enter a number</InstructionText>
-        <TextInput
-          style={styles.input}
-          maxLength={2}
-          keyboardType='decimal-pad'
-          autoCapitalize='none'
-          autoCorrect={false}
-          onChangeText={numberInputHandle}
-          value={enteredNumber}
-        />
-        <ButtonsContainer>
-          <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
-          <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-        </ButtonsContainer>
-      </Card>
-    </View>
+    <ScrollView style={styles.screen}>
+      <KeyboardAvoidingView style={styles.screen} behavior="position">
+        <View style={[styles.rootContainer, { marginTop: marginTop }]}>
+          <Title>Oieeeeeee</Title>
+          <Card>
+            <InstructionText>Enter a number</InstructionText>
+            <TextInput
+              style={styles.input}
+              maxLength={2}
+              keyboardType='decimal-pad'
+              autoCapitalize='none'
+              autoCorrect={false}
+              onChangeText={numberInputHandle}
+              value={enteredNumber}
+            />
+            <ButtonsContainer>
+              <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+              <PrimaryButton onPress={confirmInputHandler}>
+                Confirm
+              </PrimaryButton>
+            </ButtonsContainer>
+          </Card>
+        </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
@@ -62,10 +70,13 @@ export default StartGameScreen;
 const deviceHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
-  rootContainer:{
-    flex:1,
+  screen: {
+    flex: 1,
+  },
+  rootContainer: {
+    flex: 1,
     marginTop: deviceHeight < 400 ? 30 : 100,
-    alignItems:'center'
+    alignItems: 'center',
   },
   input: {
     height: 50,
