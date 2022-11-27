@@ -1,28 +1,47 @@
-import { StyleSheet, View, Text, Image, Dimensions, useWindowDimensions } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Dimensions,
+  useWindowDimensions,
+  ScrollView,
+} from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
 import Title from '../components/Title';
 import Colors from '../constants/colors';
 
 const GameOverScreen = (props) => {
-
   const { width, height } = useWindowDimensions();
 
   return (
-    <View style={styles.rootContainer}>
-      <Title>Game Over!</Title>
-      <View style={ width > height ? styles.imageContainerLandscape : styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={require('../assets/images/success.png')}
-        />
+    <ScrollView
+      style={
+        width > height ? styles.rootScrollViewLandscape : styles.rootScrollView
+      }
+    >
+      <View style={styles.rootContainer}>
+        <Title>Game Over!</Title>
+        <View
+          style={
+            width > height
+              ? styles.imageContainerLandscape
+              : styles.imageContainer
+          }
+        >
+          <Image
+            style={styles.image}
+            source={require('../assets/images/success.png')}
+          />
+        </View>
+        <Text style={width > height ? styles.textLandscape : styles.text}>
+          Your phone needed{' '}
+          <Text style={styles.highlight}>{props.rounds.length}</Text> rounds to
+          guess the number <Text style={styles.highlight}>{props.number}</Text>.
+        </Text>
+        <PrimaryButton onPress={props.onNewGame}>Start New Game</PrimaryButton>
       </View>
-      <Text style={width > height ? styles.textLandscape : styles.text}>
-        Your phone needed <Text style={styles.highlight}>{props.rounds.length}</Text>{' '}
-        rounds to guess the number{' '}
-        <Text style={styles.highlight}>{props.number}</Text>.
-      </Text>
-      <PrimaryButton onPress={props.onNewGame}>Start New Game</PrimaryButton>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -30,7 +49,17 @@ export default GameOverScreen;
 
 const deviceWidth = Dimensions.get('window').width;
 
+const imageSizeLandscape = deviceWidth < 380 ? 75 : 150;
+const imageSizePortrait = deviceWidth < 380 ? 150 : 300;
+
 const styles = StyleSheet.create({
+  rootScrollView: {
+    marginTop: 40,
+    flex: 1,
+  },
+  rootScrollViewLandscape: {
+    flex: 1,
+  },
   rootContainer: {
     flex: 1,
     padding: 20,
@@ -39,22 +68,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageContainerLandscape: {
-    width: 150,
-    maxWidth: 150,
-    heigth:  150,
-    maxHeight:  150,
-    borderRadius:  200,
+    width: imageSizeLandscape,
+    maxWidth: imageSizeLandscape,
+    height: imageSizeLandscape,
+    maxHeight: imageSizeLandscape,
+    borderRadius: deviceWidth < 380 ? 38 : 75,
     borderWidth: 3,
     borderColor: Colors.plumDarker,
     overflow: 'hidden',
     margin: 20,
   },
   imageContainer: {
-    width: deviceWidth < 380 ? 150 : 300,
-    maxWidth: deviceWidth < 380 ? 150 : 300,
-    heigth:  deviceWidth < 380 ? 150 : 300,
-    maxHeight:  deviceWidth < 380 ? 150 : 300,
-    borderRadius:  deviceWidth < 380 ? 75 : 150,
+    width: imageSizePortrait,
+    maxWidth: imageSizePortrait,
+    heigth: imageSizePortrait,
+    maxHeight: imageSizePortrait,
+    borderRadius: deviceWidth < 380 ? 75 : 150,
     borderWidth: 3,
     borderColor: Colors.plumDarker,
     overflow: 'hidden',
@@ -65,7 +94,7 @@ const styles = StyleSheet.create({
     maxHeight: '100%',
     width: '100%',
     height: '100%',
-    overflow:'hidden'
+    overflow: 'hidden',
   },
   text: {
     fontFamily: 'open-sans',
