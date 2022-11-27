@@ -1,19 +1,22 @@
-import { StyleSheet, View, Text, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions, useWindowDimensions } from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
 import Title from '../components/Title';
 import Colors from '../constants/colors';
 
 const GameOverScreen = (props) => {
+
+  const { width, height } = useWindowDimensions();
+
   return (
     <View style={styles.rootContainer}>
       <Title>Game Over!</Title>
-      <View style={styles.imageContainer}>
+      <View style={ width > height ? styles.imageContainerLandscape : styles.imageContainer}>
         <Image
           style={styles.image}
           source={require('../assets/images/success.png')}
         />
       </View>
-      <Text style={styles.text}>
+      <Text style={width > height ? styles.textLandscape : styles.text}>
         Your phone needed <Text style={styles.highlight}>{props.rounds.length}</Text>{' '}
         rounds to guess the number{' '}
         <Text style={styles.highlight}>{props.number}</Text>.
@@ -34,6 +37,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  imageContainerLandscape: {
+    width: 150,
+    maxWidth: 150,
+    heigth:  150,
+    maxHeight:  150,
+    borderRadius:  200,
+    borderWidth: 3,
+    borderColor: Colors.plumDarker,
+    overflow: 'hidden',
+    margin: 20,
   },
   imageContainer: {
     width: deviceWidth < 380 ? 150 : 300,
@@ -58,6 +72,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     marginBottom: 24,
+  },
+  textLandscape: {
+    fontFamily: 'open-sans',
+    fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 10,
   },
   highlight: {
     fontFamily: 'open-sans-bold',

@@ -122,7 +122,7 @@ const GameScreen = (props) => {
 
   if (width > height) {
     content = (
-      <View style={[styles.screen, { marginTop: 0 }]}>
+      <View style={[styles.screen, { marginTop: -50 }]}>
         <Title>Guess</Title>
         <View style={styles.landscape}>
           <NumberContainer>{currentGuess}</NumberContainer>
